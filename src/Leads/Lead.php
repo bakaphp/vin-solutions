@@ -57,6 +57,28 @@ class Lead
         return $response;
     }
 
+    public static function getAllV2(Dealer $dealer, User $user, array $params = []): array
+    {
+        $client = new Client($dealer->id, $user->id);
+
+        $data = [];
+        $data['DealerId'] = $dealer->id;
+        $data['UserId'] = $user->id;
+
+        $params = http_build_query($params);
+
+        $response = $client->get(
+            '/leads?dealerId=' . $dealer->id . '&userId=' . $user->id . '&' . $params,
+            [
+                'headers' => [
+                    'Content-Type' => 'application/vnd.coxauto.v3+json',
+                ],
+            ]
+        );
+
+        return $response;
+    }
+
     /**
      * Get a contact by its ID.
      */
